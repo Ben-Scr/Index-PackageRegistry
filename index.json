@@ -1,16 +1,38 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-23T14:45:00Z",
+  "generatedAt": "2026-05-23T16:00:00Z",
   "packages": [
     {
-      "name": "TestPkg.Hello",
+      "name": "Index.Cryptography",
       "version": "0.1.0",
-      "description": "Smoke-test package for the Index cloud registry. Pure C#, no dependencies.",
-      "downloadUrl": "https://github.com/Ben-Scr/Index-PackageRegistry/releases/download/TestPkg.Hello-0.1.0/TestPkg.Hello-0.1.0.zip",
-      "sha256": "04e198c7362f1611fbf4223a5463e2a20209ea6fc711949db24ddc09d913b7b8",
-      "sizeBytes": 839,
+      "description": "Authenticated AES-GCM encryption, PBKDF2 password keys, hashing/HMAC, and a bias-free secure RNG.",
+      "downloadUrl": "https://github.com/Ben-Scr/Index-PackageRegistry/releases/download/Index.Cryptography-0.1.0/Index.Cryptography-0.1.0.zip",
+      "sha256": "c908a6c7828290601fff58fc2b8ce133f8955a358ceb7600afc5b2183abeb91b",
+      "sizeBytes": 9966,
       "license": "MIT",
       "layers": ["csharp"],
+      "dependencies": []
+    },
+    {
+      "name": "Index.Serialization",
+      "version": "0.1.0",
+      "description": "JSON / encrypted JSON / ZIP helpers under the Index.Serialization namespace.",
+      "downloadUrl": "https://github.com/Ben-Scr/Index-PackageRegistry/releases/download/Index.Serialization-0.1.0/Index.Serialization-0.1.0.zip",
+      "sha256": "6cb10d963c7de9e6d520335e0d3d4b32666f51f5a4afb008d4cc7aec3fe3359b",
+      "sizeBytes": 3886,
+      "license": "MIT",
+      "layers": ["csharp"],
+      "dependencies": []
+    },
+    {
+      "name": "Index.Tilemap2D",
+      "version": "0.1.0",
+      "description": "2D tilemap component (chunked sparse storage), render system, and editor inspector.",
+      "downloadUrl": "https://github.com/Ben-Scr/Index-PackageRegistry/releases/download/Index.Tilemap2D-0.1.0/Index.Tilemap2D-0.1.0.zip",
+      "sha256": "a77005e4407cde23445b73ca8ed55132542e8c9863f3c02b122be14f49b64737",
+      "sizeBytes": 32451,
+      "license": "MIT",
+      "layers": ["native", "csharp"],
       "dependencies": []
     }
   ]
