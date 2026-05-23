@@ -42,10 +42,32 @@ $pkgName = $nameMatch.Groups[1].Value
 $pkgVersion = $verMatch.Groups[1].Value
 
 # Zip the package folder so the resulting zip has <pkgFolderName>/index-package.lua at its root.
+# We build entries by hand instead of using PowerShell's Compress-Archive OR
+# .NET's ZipFile.CreateFromDirectory — both produce backslash-separated entry
+# names on Windows, which violates the ZIP spec (PKWARE APPNOTE.TXT §4.4.17.1
+# requires forward slashes) and trips up cross-platform unzippers.
 $zipName = "$pkgName-$pkgVersion.zip"
 $zipPath = Join-Path $outDir $zipName
 if (Test-Path $zipPath) { Remove-Item $zipPath }
-Compress-Archive -Path $pkgDir -DestinationPath $zipPath
+Add-Type -Assembly System.IO.Compression
+Add-Type -Assembly System.IO.Compression.FileSystem
+$baseName = Split-Path $pkgDir -Leaf
+$pkgDirFull = (Resolve-Path $pkgDir).Path
+$archive = [System.IO.Compression.ZipFile]::Open($zipPath, [System.IO.Compression.ZipArchiveMode]::Create)
+try {
+    foreach ($file in Get-ChildItem -Path $pkgDir -Recurse -File) {
+        $rel = $file.FullName.Substring($pkgDirFull.Length).TrimStart('\','/').Replace('\','/')
+        $entryName = "$baseName/$rel"
+        $entry = $archive.CreateEntry($entryName, [System.IO.Compression.CompressionLevel]::Optimal)
+        $entryStream = $entry.Open()
+        try {
+            $fileStream = [System.IO.File]::OpenRead($file.FullName)
+            try { $fileStream.CopyTo($entryStream) } finally { $fileStream.Dispose() }
+        } finally { $entryStream.Dispose() }
+    }
+} finally {
+    $archive.Dispose()
+}
 $sha = (Get-FileHash $zipPath -Algorithm SHA256).Hash.ToLower()
 $size = (Get-Item $zipPath).Length
 
