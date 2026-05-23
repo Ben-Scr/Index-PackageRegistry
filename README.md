@@ -6,20 +6,6 @@ The editor fetches [`index.json`](./index.json) at startup, then offers an Insta
 
 No backend. The whole thing is a static JSON file pointing at GitHub Releases.
 
-## Repo layout
-
-```
-Index-PackageRegistry/
-├── index.json              ← the registry the editor reads
-├── README.md               ← this file
-├── packages/               ← source of packages maintained in-repo (optional)
-│   └── TestPkg.Hello/
-│       ├── index-package.lua
-│       └── Source/
-└── scripts/
-    └── publish-package.ps1 ← zip + sha + (optional) gh release create
-```
-
 Packages hosted elsewhere can also be listed — `downloadUrl` can point at any HTTPS zip.
 
 ## `index.json` schema
