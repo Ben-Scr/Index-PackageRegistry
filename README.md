@@ -14,9 +14,8 @@ Index-PackageRegistry/
 ├── README.md               ← this file
 ├── packages/               ← source of packages maintained in-repo (optional)
 │   └── TestPkg.Hello/
-│       └── TestPkg.Hello/
-│           ├── index-package.lua
-│           └── Source/
+│       ├── index-package.lua
+│       └── Source/
 └── scripts/
     └── publish-package.ps1 ← zip + sha + (optional) gh release create
 ```

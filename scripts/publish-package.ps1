@@ -8,10 +8,9 @@
 #   .\scripts\publish-package.ps1 -PackageDir .\packages\TestPkg.Hello -OutDir .\dist
 #   .\scripts\publish-package.ps1 -PackageDir .\packages\TestPkg.Hello -OutDir .\dist -CreateRelease
 #
-# The PackageDir MUST contain exactly one top-level folder named after the
-# package (e.g. .\packages\TestPkg.Hello\TestPkg.Hello\index-package.lua).
-# That folder is what becomes the zip's root entry, matching what the
-# editor's `registry-download` subcommand expects.
+# The PackageDir IS the package folder — it must contain index-package.lua
+# at its root. The folder name becomes the zip's top-level entry, matching
+# what the editor's `registry-download` subcommand expects.
 
 [CmdletBinding()]
 param(
@@ -26,15 +25,9 @@ $ErrorActionPreference = "Stop"
 $pkgDir = Resolve-Path $PackageDir
 $outDir = if (Test-Path $OutDir) { Resolve-Path $OutDir } else { New-Item -ItemType Directory -Path $OutDir | Resolve-Path }
 
-# Locate the single top-level folder containing index-package.lua.
-$topFolders = Get-ChildItem -Directory $pkgDir
-if ($topFolders.Count -ne 1) {
-    throw "Expected exactly one top-level folder under '$pkgDir', found $($topFolders.Count)."
-}
-$topFolder = $topFolders[0]
-$manifestPath = Join-Path $topFolder.FullName "index-package.lua"
+$manifestPath = Join-Path $pkgDir "index-package.lua"
 if (-not (Test-Path $manifestPath)) {
-    throw "No index-package.lua at '$manifestPath'."
+    throw "No index-package.lua at '$manifestPath'. PackageDir should be the package folder itself, not a wrapper around it."
 }
 
 # Parse name + version out of the manifest (loose regex; same idea as the
@@ -48,11 +41,11 @@ if (-not $nameMatch.Success -or -not $verMatch.Success) {
 $pkgName = $nameMatch.Groups[1].Value
 $pkgVersion = $verMatch.Groups[1].Value
 
-# Zip <topFolder> so the zip contains <topFolder>/index-package.lua at root.
+# Zip the package folder so the resulting zip has <pkgFolderName>/index-package.lua at its root.
 $zipName = "$pkgName-$pkgVersion.zip"
 $zipPath = Join-Path $outDir $zipName
 if (Test-Path $zipPath) { Remove-Item $zipPath }
-Compress-Archive -Path $topFolder.FullName -DestinationPath $zipPath
+Compress-Archive -Path $pkgDir -DestinationPath $zipPath
 $sha = (Get-FileHash $zipPath -Algorithm SHA256).Hash.ToLower()
 $size = (Get-Item $zipPath).Length
 
