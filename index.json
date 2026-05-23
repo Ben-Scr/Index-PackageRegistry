@@ -10,6 +10,7 @@
       "sha256": "04e198c7362f1611fbf4223a5463e2a20209ea6fc711949db24ddc09d913b7b8",
       "sizeBytes": 839,
       "license": "MIT",
+      "layers": ["csharp"],
       "dependencies": []
     }
   ]

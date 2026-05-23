@@ -41,6 +41,15 @@ if (-not $nameMatch.Success -or -not $verMatch.Success) {
 $pkgName = $nameMatch.Groups[1].Value
 $pkgVersion = $verMatch.Groups[1].Value
 
+# Detect which layers the manifest declares so the registry entry can
+# carry layer badges (so the editor's Search tab can show "csharp" /
+# "native" badges BEFORE the package is downloaded). Mirrors the regex
+# logic in IndexPackageInstaller::ReadManifest.
+$layers = @()
+if ($manifestText -match '(?ms)(?:^|[\s,;{])(?:native|engine_core)\s*=\s*\{')             { $layers += "native" }
+if ($manifestText -match '(?ms)(?:^|[\s,;{])(?:native_standalone|standalone_cpp)\s*=\s*\{') { $layers += "native_standalone" }
+if ($manifestText -match '(?ms)(?:^|[\s,;{])csharp\s*=\s*\{')                              { $layers += "csharp" }
+
 # Zip the package folder so the resulting zip has <pkgFolderName>/index-package.lua at its root.
 # We build entries by hand instead of using PowerShell's Compress-Archive OR
 # .NET's ZipFile.CreateFromDirectory — both produce backslash-separated entry
@@ -86,6 +95,7 @@ $entry = [pscustomobject]@{
     downloadUrl = $downloadUrl
     sha256      = $sha
     sizeBytes   = $size
+    layers      = $layers
     dependencies = @()
 }
 
