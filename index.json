@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-23T14:45:00Z",
+  "packages": [
+    {
+      "name": "TestPkg.Hello",
+      "version": "0.1.0",
+      "description": "Smoke-test package for the Index cloud registry. Pure C#, no dependencies.",
+      "downloadUrl": "https://github.com/Ben-Scr/Index-PackageRegistry/releases/download/TestPkg.Hello-0.1.0/TestPkg.Hello-0.1.0.zip",
+      "sha256": "d68f8d439c88554e98dd61c225efa53e6efe79c5e32c1007d19ece83e8b24e84",
+      "sizeBytes": 839,
+      "license": "MIT",
+      "dependencies": []
+    }
+  ]
+}
