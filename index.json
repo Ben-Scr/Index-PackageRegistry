@@ -18,7 +18,7 @@
       "version": "0.1.0",
       "description": "JSON / encrypted JSON / ZIP helpers under the Index.Serialization namespace.",
       "downloadUrl": "https://github.com/Ben-Scr/Index-PackageRegistry/releases/download/Index.Serialization-0.1.0/Index.Serialization-0.1.0.zip",
-      "sha256": "dc13d8d5a901597ada96a2fad5f491d3899ccc071f2ccee88415ea22a1c20067",
+      "sha256": "27e23f0cdcbfb912f872d5fe3fd12ed5a8e6086bd48390aca77524470b0ddf6b",
       "sizeBytes": 20775,
       "license": "MIT",
       "layers": ["csharp"],
